@@ -1,0 +1,747 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Sumate | Puentes de Democracia</title>
+  <link rel="icon" href="logopuentesdedemocracia.png">
+  <link href="https://fonts.googleapis.com/css2?family=Albert+Sans:wght@400;600;700;800&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --azul: #46729C;
+      --azul-dark: #2f5070;
+      --azul-light: #5b8ab8;
+      --rojo: #ff3b3b;
+      --blanco: #fff;
+      --gris: #8899aa;
+      --fondo: #0a0f14;
+      --card-bg: #111820;
+      --card-border: #1e2d3d;
+    }
+
+    body {
+      margin: 0;
+      padding: 0;
+      background-color: var(--fondo);
+      min-height: 100vh;
+      font-family: 'Albert Sans', sans-serif;
+      color: var(--blanco);
+      /* Espacio para la barra fija de abajo */
+      padding-bottom: 80px;
+    }
+
+    /* ===== Header ===== */
+    header {
+      position: fixed;
+      top: 0; left: 0;
+      width: 100%;
+      background-color: var(--azul);
+      display: flex;
+      align-items: center;
+      justify-content: flex-start;
+      padding: 10px 50px;
+      z-index: 1000;
+      gap: 60px;
+      box-shadow: 0 2px 6px rgba(0,0,0,0.3);
+    }
+    .logo-navbar { height: 45px; width: auto; display: block; flex-shrink: 0; }
+
+    nav {
+      display: flex;
+      gap: 40px;
+      flex-wrap: wrap;
+      flex: 1;
+    }
+    nav a {
+      text-decoration: none;
+      color: #fff;
+      font-weight: 500;
+      transition: opacity 0.2s;
+      white-space: nowrap;
+    }
+    nav a:hover { opacity: 0.8; }
+
+    /* Botón registrarse — empujado a la derecha */
+    .btn-registrarse {
+      margin-left: auto;
+      flex-shrink: 0;
+      background: #fff;
+      color: var(--azul-dark);
+      font-family: 'Albert Sans', sans-serif;
+      font-size: 0.88rem;
+      font-weight: 700;
+      padding: 7px 20px;
+      border: none;
+      border-radius: 20px;
+      cursor: pointer;
+      transition: background 0.18s, color 0.18s, transform 0.12s;
+      white-space: nowrap;
+    }
+    .btn-registrarse:hover {
+      background: var(--azul-dark);
+      color: #fff;
+      transform: translateY(-1px);
+    }
+
+    /* ===== Page layout ===== */
+    .page {
+      padding-top: 90px;
+      padding-bottom: 20px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+
+    /* ===== Hero frase ===== */
+    .hero-frase {
+      width: 100%;
+      display: flex;
+      justify-content: center;
+      padding: 40px 20px 20px;
+    }
+    .hero-frase img {
+      max-width: min(80vw, 600px);
+      height: auto;
+      display: block;
+    }
+
+    /* ===== Sección tweets ===== */
+    .tweets-section {
+      width: 100%;
+      max-width: 680px;
+      padding: 30px 20px 0;
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+    }
+
+    .section-label {
+      font-size: 0.78rem;
+      font-weight: 700;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--gris);
+      margin-bottom: 4px;
+      padding-left: 4px;
+    }
+
+    /* ===== Tweet card ===== */
+    .tweet {
+      background: var(--card-bg);
+      border: 1px solid var(--card-border);
+      border-radius: 16px;
+      padding: 20px 20px 16px;
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+      transition: border-color 0.2s, transform 0.15s;
+      animation: slideUp 0.5s ease both;
+    }
+    .tweet:hover {
+      border-color: var(--azul-light);
+      transform: translateY(-2px);
+    }
+
+    .tweet:nth-child(1) { animation-delay: 0.05s; }
+    .tweet:nth-child(2) { animation-delay: 0.12s; }
+    .tweet:nth-child(3) { animation-delay: 0.19s; }
+    .tweet:nth-child(4) { animation-delay: 0.26s; }
+    .tweet:nth-child(5) { animation-delay: 0.33s; }
+    .tweet:nth-child(6) { animation-delay: 0.40s; }
+    .tweet:nth-child(7) { animation-delay: 0.47s; }
+
+    @keyframes slideUp {
+      from { opacity: 0; transform: translateY(14px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+
+    .tweet-header {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .tweet-avatar {
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+      font-size: 0.85rem;
+      font-weight: 800;
+      color: #fff;
+      letter-spacing: -0.5px;
+    }
+
+    .tweet-meta { display: flex; flex-direction: column; gap: 1px; }
+    .tweet-name { font-weight: 700; font-size: 0.95rem; color: var(--blanco); }
+    .tweet-handle { font-size: 0.82rem; color: var(--gris); }
+
+    .tweet-x-icon {
+      margin-left: auto;
+      color: var(--gris);
+      opacity: 0.5;
+      font-size: 1.1rem;
+      flex-shrink: 0;
+    }
+
+    .tweet-body { font-size: 1.05rem; line-height: 1.6; color: #e8eef4; }
+
+    .tweet-titulo {
+      display: block;
+      font-size: 1.15rem;
+      font-weight: 800;
+      color: var(--blanco);
+      line-height: 1.3;
+      margin-bottom: 6px;
+    }
+
+    .tweet-resto {
+      display: block;
+      font-weight: 400;
+      color: #c8d8e8;
+    }
+
+    .tweet-footer {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding-top: 4px;
+      border-top: 1px solid var(--card-border);
+    }
+
+    .tweet-time { font-size: 0.78rem; color: var(--gris); }
+
+    /* ===== Botón escuchar ===== */
+    .btn-escuchar {
+      display: flex;
+      align-items: center;
+      gap: 7px;
+      background: none;
+      border: 1px solid var(--azul);
+      border-radius: 20px;
+      color: var(--azul-light);
+      font-family: 'Albert Sans', sans-serif;
+      font-size: 0.82rem;
+      font-weight: 600;
+      padding: 5px 14px;
+      cursor: pointer;
+      transition: background 0.18s, color 0.18s;
+      user-select: none;
+    }
+    .btn-escuchar:hover { background: var(--azul); color: #fff; }
+    .btn-escuchar.playing { background: var(--azul); color: #fff; border-color: var(--azul-light); }
+    .btn-escuchar svg { width: 14px; height: 14px; flex-shrink: 0; }
+
+    /* ===== Barra contacto ===== */
+    .barra-contacto {
+      width: 90%;
+      max-width: 680px;
+      background-color: var(--rojo);
+      color: #fff;
+      text-align: center;
+      font-size: 1.5rem;
+      font-weight: 700;
+      padding: 26px 20px;
+      border-radius: 14px;
+      box-shadow: 0 0 24px rgba(255,59,59,0.3);
+      letter-spacing: 0.3px;
+      margin-top: 36px;
+    }
+
+    /* ===== Barra fija inferior ===== */
+    .barra-inferior {
+      position: fixed;
+      bottom: 0; left: 0;
+      width: 100%;
+      background: #0d1520;
+      border-top: 1px solid var(--card-border);
+      padding: 12px 20px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      z-index: 1000;
+      box-shadow: 0 -4px 20px rgba(0,0,0,0.4);
+    }
+
+    .barra-inferior input[type="text"] {
+      flex: 1;
+      background: var(--card-bg);
+      border: 1px solid var(--card-border);
+      border-radius: 24px;
+      color: #fff;
+      font-family: 'Albert Sans', sans-serif;
+      font-size: 0.95rem;
+      padding: 11px 20px;
+      outline: none;
+      transition: border-color 0.2s;
+    }
+    .barra-inferior input[type="text"]::placeholder { color: var(--gris); }
+    .barra-inferior input[type="text"]:focus { border-color: var(--azul-light); }
+
+    /* Botón enviar texto */
+    .btn-enviar {
+      background: var(--azul);
+      border: none;
+      border-radius: 50%;
+      width: 44px;
+      height: 44px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      flex-shrink: 0;
+      transition: background 0.18s, transform 0.12s;
+      color: #fff;
+    }
+    .btn-enviar:hover { background: var(--azul-light); transform: scale(1.07); }
+    .btn-enviar svg { width: 18px; height: 18px; }
+
+    /* Botón grabar audio */
+    .btn-grabar {
+      background: var(--card-bg);
+      border: 1px solid var(--card-border);
+      border-radius: 50%;
+      width: 44px;
+      height: 44px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      flex-shrink: 0;
+      transition: background 0.18s, border-color 0.18s, transform 0.12s;
+      color: var(--gris);
+    }
+    .btn-grabar:hover { border-color: var(--rojo); color: var(--rojo); transform: scale(1.07); }
+    .btn-grabar.grabando {
+      background: var(--rojo);
+      border-color: var(--rojo);
+      color: #fff;
+      animation: pulso 1s ease infinite;
+    }
+    .btn-grabar svg { width: 18px; height: 18px; }
+
+    @keyframes pulso {
+      0%, 100% { transform: scale(1); box-shadow: 0 0 0 0 rgba(255,59,59,0.5); }
+      50%       { transform: scale(1.08); box-shadow: 0 0 0 6px rgba(255,59,59,0); }
+    }
+
+    /* ===== Modal registro ===== */
+    .modal-overlay {
+      position: fixed;
+      inset: 0;
+      background: rgba(0,0,0,0.7);
+      backdrop-filter: blur(4px);
+      z-index: 2000;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.2s;
+    }
+    .modal-overlay.visible {
+      opacity: 1;
+      pointer-events: all;
+    }
+
+    .modal {
+      background: #111820;
+      border: 1px solid var(--card-border);
+      border-radius: 20px;
+      padding: 36px 32px;
+      width: 90%;
+      max-width: 400px;
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+      transform: translateY(12px);
+      transition: transform 0.2s;
+    }
+    .modal-overlay.visible .modal { transform: translateY(0); }
+
+    .modal h2 {
+      font-size: 1.5rem;
+      font-weight: 800;
+      color: #fff;
+      margin-bottom: 4px;
+    }
+    .modal p { font-size: 0.9rem; color: var(--gris); margin-top: -8px; }
+
+    .modal input {
+      background: var(--fondo);
+      border: 1px solid var(--card-border);
+      border-radius: 10px;
+      color: #fff;
+      font-family: 'Albert Sans', sans-serif;
+      font-size: 0.95rem;
+      padding: 12px 16px;
+      outline: none;
+      transition: border-color 0.2s;
+      width: 100%;
+    }
+    .modal input::placeholder { color: var(--gris); }
+    .modal input:focus { border-color: var(--azul-light); }
+
+    .modal-btns {
+      display: flex;
+      gap: 10px;
+      margin-top: 4px;
+    }
+    .btn-modal-cancelar {
+      flex: 1;
+      background: none;
+      border: 1px solid var(--card-border);
+      border-radius: 10px;
+      color: var(--gris);
+      font-family: 'Albert Sans', sans-serif;
+      font-size: 0.9rem;
+      font-weight: 600;
+      padding: 11px;
+      cursor: pointer;
+      transition: border-color 0.18s, color 0.18s;
+    }
+    .btn-modal-cancelar:hover { border-color: var(--gris); color: #fff; }
+
+    .btn-modal-confirmar {
+      flex: 1;
+      background: var(--azul);
+      border: none;
+      border-radius: 10px;
+      color: #fff;
+      font-family: 'Albert Sans', sans-serif;
+      font-size: 0.9rem;
+      font-weight: 700;
+      padding: 11px;
+      cursor: pointer;
+      transition: background 0.18s;
+    }
+    .btn-modal-confirmar:hover { background: var(--azul-light); }
+
+    /* ===== Responsive ===== */
+    @media (max-width: 768px) {
+      header { padding: 10px 16px; gap: 12px; }
+      .logo-navbar { max-height: 36px; }
+      nav { gap: 12px; }
+      nav a { font-size: 0.88rem; }
+      .btn-registrarse { font-size: 0.8rem; padding: 6px 14px; }
+
+      .hero-frase img { max-width: 90vw; }
+      .tweet-body { font-size: 0.97rem; }
+      .tweet-titulo { font-size: 1.05rem; }
+      .barra-contacto { font-size: 1.2rem; padding: 20px 16px; }
+
+      .barra-inferior { padding: 10px 12px; gap: 8px; }
+      .barra-inferior input[type="text"] { font-size: 0.88rem; padding: 10px 14px; }
+    }
+  </style>
+</head>
+<body>
+
+  <header>
+    <img src="logopuentesdedemocracia.png" alt="Puentes de Democracia" class="logo-navbar" />
+    <nav>
+      <a href="index.html">Inicio</a>
+      <a href="index.html#video">Video</a>
+      <a href="index.html#Mapa">Mapa</a>
+      <a href="sumate.html">Sumá tu historia</a>
+    </nav>
+    <button class="btn-registrarse" onclick="abrirModal()">Registrarse</button>
+  </header>
+
+  <div class="page">
+
+    <div class="tweets-section">
+      <div class="section-label">Voces de la democracia</div>
+
+      <!-- Tweet 1 -->
+      <div class="tweet">
+        <div class="tweet-header">
+          <div class="tweet-avatar" style="background: linear-gradient(135deg, #46729C, #2f5070);">CP</div>
+          <div class="tweet-meta">
+            <span class="tweet-name">Cecilia Pérez</span>
+            <span class="tweet-handle">@ceciperezzz</span>
+          </div>
+          <span class="tweet-x-icon">✕</span>
+        </div>
+        <div class="tweet-body">
+          <span class="tweet-titulo">Los lápices siguen escribiendo.</span>
+          <span class="tweet-resto">Recortar la educación pública no es ajuste: es hipotecar el futuro de los que menos tienen. La democracia se defiende también en el aula.</span>
+        </div>
+        <div class="tweet-footer">
+          <span class="tweet-time">Rosario, Argentina</span>
+          <button class="btn-escuchar" onclick="leerTweet(this, 'Los lápices siguen escribiendo. Recortar la educación pública no es ajuste: es hipotecar el futuro de los que menos tienen. La democracia se defiende también en el aula.')">
+            <svg viewBox="0 0 24 24" fill="currentColor"><path d="M3 9v6h4l5 5V4L7 9H3zm13.5 3c0-1.77-1.02-3.29-2.5-4.03v8.05c1.48-.73 2.5-2.25 2.5-4.02z"/></svg>
+            Escuchar
+          </button>
+        </div>
+      </div>
+
+      <!-- Tweet 2 -->
+      <div class="tweet">
+        <div class="tweet-header">
+          <div class="tweet-avatar" style="background: linear-gradient(135deg, #3a7d44, #1e4d28);">RM</div>
+          <div class="tweet-meta">
+            <span class="tweet-name">Rodrigo Martínez</span>
+            <span class="tweet-handle">@rodri_mtz</span>
+          </div>
+          <span class="tweet-x-icon">✕</span>
+        </div>
+        <div class="tweet-body">
+          <span class="tweet-titulo">La democracia es todos.</span>
+          <span class="tweet-resto">No solo los que votan a quien gana: también los estudiantes, los docentes, los que marchan, los que esperan. Todos tenemos voz. Todos importamos.</span>
+        </div>
+        <div class="tweet-footer">
+          <span class="tweet-time">Buenos Aires, Argentina</span>
+          <button class="btn-escuchar" onclick="leerTweet(this, 'La democracia es todos. No solo los que votan a quien gana: también los estudiantes, los docentes, los que marchan, los que esperan. Todos tenemos voz. Todos importamos.')">
+            <svg viewBox="0 0 24 24" fill="currentColor"><path d="M3 9v6h4l5 5V4L7 9H3zm13.5 3c0-1.77-1.02-3.29-2.5-4.03v8.05c1.48-.73 2.5-2.25 2.5-4.02z"/></svg>
+            Escuchar
+          </button>
+        </div>
+      </div>
+
+      <!-- Tweet 3 -->
+      <div class="tweet">
+        <div class="tweet-header">
+          <div class="tweet-avatar" style="background: linear-gradient(135deg, #8b4513, #5c2d0a);">LG</div>
+          <div class="tweet-meta">
+            <span class="tweet-name">Laura González</span>
+            <span class="tweet-handle">@lauragonzalez_ok</span>
+          </div>
+          <span class="tweet-x-icon">✕</span>
+        </div>
+        <div class="tweet-body">
+          <span class="tweet-titulo">La universidad pública argentina le dio al mundo premios Nobel, científicos, médicos y maestros.</span>
+          <span class="tweet-resto">Eso no se financia con recortes. Eso se cuida con presupuesto.</span>
+        </div>
+        <div class="tweet-footer">
+          <span class="tweet-time">Córdoba, Argentina</span>
+          <button class="btn-escuchar" onclick="leerTweet(this, 'La universidad pública argentina le dio al mundo premios Nobel, científicos, médicos y maestros. Eso no se financia con recortes. Eso se cuida con presupuesto.')">
+            <svg viewBox="0 0 24 24" fill="currentColor"><path d="M3 9v6h4l5 5V4L7 9H3zm13.5 3c0-1.77-1.02-3.29-2.5-4.03v8.05c1.48-.73 2.5-2.25 2.5-4.02z"/></svg>
+            Escuchar
+          </button>
+        </div>
+      </div>
+
+      <!-- Tweet 4 -->
+      <div class="tweet">
+        <div class="tweet-header">
+          <div class="tweet-avatar" style="background: linear-gradient(135deg, #7b2d8b, #4a1a55);">MF</div>
+          <div class="tweet-meta">
+            <span class="tweet-name">Martín Ferreyra</span>
+            <span class="tweet-handle">@martin_ferreyra</span>
+          </div>
+          <span class="tweet-x-icon">✕</span>
+        </div>
+        <div class="tweet-body">
+          <span class="tweet-titulo">En tiempos de grieta, construimos puentes.</span>
+          <span class="tweet-resto">No para ignorar las diferencias, sino para que podamos hablarnos, entendernos y decidir juntos qué país queremos.</span>
+        </div>
+        <div class="tweet-footer">
+          <span class="tweet-time">Mendoza, Argentina</span>
+          <button class="btn-escuchar" onclick="leerTweet(this, 'En tiempos de grieta, construimos puentes. No para ignorar las diferencias, sino para que podamos hablarnos, entendernos y decidir juntos qué país queremos.')">
+            <svg viewBox="0 0 24 24" fill="currentColor"><path d="M3 9v6h4l5 5V4L7 9H3zm13.5 3c0-1.77-1.02-3.29-2.5-4.03v8.05c1.48-.73 2.5-2.25 2.5-4.02z"/></svg>
+            Escuchar
+          </button>
+        </div>
+      </div>
+
+      <!-- Tweet 5 -->
+      <div class="tweet">
+        <div class="tweet-header">
+          <div class="tweet-avatar" style="background: linear-gradient(135deg, #c0392b, #7b1a12);">SR</div>
+          <div class="tweet-meta">
+            <span class="tweet-name">Sofía Romero</span>
+            <span class="tweet-handle">@sofiaromero__</span>
+          </div>
+          <span class="tweet-x-icon">✕</span>
+        </div>
+        <div class="tweet-body">
+          <span class="tweet-titulo">Cuando cierran una escuela por falta de fondos, no es un número en un balance.</span>
+          <span class="tweet-resto">Es un chico que pierde su oportunidad. Eso no es libertad. Eso es abandono.</span>
+        </div>
+        <div class="tweet-footer">
+          <span class="tweet-time">Santa Fe, Argentina</span>
+          <button class="btn-escuchar" onclick="leerTweet(this, 'Cuando cierran una escuela por falta de fondos, no es un número en un balance. Es un chico que pierde su oportunidad. Eso no es libertad. Eso es abandono.')">
+            <svg viewBox="0 0 24 24" fill="currentColor"><path d="M3 9v6h4l5 5V4L7 9H3zm13.5 3c0-1.77-1.02-3.29-2.5-4.03v8.05c1.48-.73 2.5-2.25 2.5-4.02z"/></svg>
+            Escuchar
+          </button>
+        </div>
+      </div>
+
+      <!-- Tweet 6 -->
+      <div class="tweet">
+        <div class="tweet-header">
+          <div class="tweet-avatar" style="background: linear-gradient(135deg, #1a7a7a, #0d4a4a);">DV</div>
+          <div class="tweet-meta">
+            <span class="tweet-name">Diego Villanueva</span>
+            <span class="tweet-handle">@diegovillanuevaa</span>
+          </div>
+          <span class="tweet-x-icon">✕</span>
+        </div>
+        <div class="tweet-body">
+          <span class="tweet-titulo">Tu voz también conecta.</span>
+          <span class="tweet-resto">Participar no es solo votar cada dos años: es exigir, preguntar, organizarse. La democracia se alimenta de ciudadanos activos, no pasivos.</span>
+        </div>
+        <div class="tweet-footer">
+          <span class="tweet-time">Tucumán, Argentina</span>
+          <button class="btn-escuchar" onclick="leerTweet(this, 'Tu voz también conecta. Participar no es solo votar cada dos años: es exigir, preguntar, organizarse. La democracia se alimenta de ciudadanos activos, no pasivos.')">
+            <svg viewBox="0 0 24 24" fill="currentColor"><path d="M3 9v6h4l5 5V4L7 9H3zm13.5 3c0-1.77-1.02-3.29-2.5-4.03v8.05c1.48-.73 2.5-2.25 2.5-4.02z"/></svg>
+            Escuchar
+          </button>
+        </div>
+      </div>
+
+      <!-- Tweet 7 -->
+      <div class="tweet">
+        <div class="tweet-header">
+          <div class="tweet-avatar" style="background: linear-gradient(135deg, #d4820a, #8a5200);">AB</div>
+          <div class="tweet-meta">
+            <span class="tweet-name">Ana Belén Torres</span>
+            <span class="tweet-handle">@anabelen_torres</span>
+          </div>
+          <span class="tweet-x-icon">✕</span>
+        </div>
+        <div class="tweet-body">
+          <span class="tweet-titulo">La salud y la educación públicas no son ideología.</span>
+          <span class="tweet-resto">Son derechos conquistados con décadas de lucha. Defenderlos tampoco es ideología. Es memoria.</span>
+        </div>
+        <div class="tweet-footer">
+          <span class="tweet-time">La Plata, Argentina</span>
+          <button class="btn-escuchar" onclick="leerTweet(this, 'La salud y la educación públicas no son ideología. Son derechos conquistados con décadas de lucha. Defenderlos tampoco es ideología. Es memoria.')">
+            <svg viewBox="0 0 24 24" fill="currentColor"><path d="M3 9v6h4l5 5V4L7 9H3zm13.5 3c0-1.77-1.02-3.29-2.5-4.03v8.05c1.48-.73 2.5-2.25 2.5-4.02z"/></svg>
+            Escuchar
+          </button>
+        </div>
+      </div>
+
+    </div><!-- /tweets-section -->
+
+
+  </div><!-- /page -->
+
+  <!-- Barra fija inferior -->
+  <div class="barra-inferior">
+    <input type="text" id="inputHistoria" placeholder="Sumá tu historia" maxlength="280" />
+
+    <!-- Botón enviar -->
+    <button class="btn-enviar" title="Enviar" onclick="enviarHistoria()">
+      <svg viewBox="0 0 24 24" fill="currentColor"><path d="M2.01 21L23 12 2.01 3 2 10l15 2-15 2z"/></svg>
+    </button>
+
+    <!-- Botón grabar audio -->
+    <button class="btn-grabar" id="btnGrabar" title="Grabar audio" onclick="toggleGrabacion()">
+      <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 14c1.66 0 3-1.34 3-3V5c0-1.66-1.34-3-3-3S9 3.34 9 5v6c0 1.66 1.34 3 3 3zm-1-9c0-.55.45-1 1-1s1 .45 1 1v6c0 .55-.45 1-1 1s-1-.45-1-1V5zm6 6c0 2.76-2.24 5-5 5s-5-2.24-5-5H5c0 3.53 2.61 6.43 6 6.92V21h2v-3.08c3.39-.49 6-3.39 6-6.92h-2z"/></svg>
+    </button>
+  </div>
+
+  <!-- Modal registro -->
+  <div class="modal-overlay" id="modalOverlay" onclick="cerrarModalClickFuera(event)">
+    <div class="modal">
+      <h2>Registrarse</h2>
+      <p>Sumá tu voz a Puentes de Democracia</p>
+      <input type="text" placeholder="Nombre completo" />
+      <input type="email" placeholder="Correo electrónico" />
+      <input type="password" placeholder="Contraseña" />
+      <div class="modal-btns">
+        <button class="btn-modal-cancelar" onclick="cerrarModal()">Cancelar</button>
+        <button class="btn-modal-confirmar">Crear cuenta</button>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    // ===== Text-to-speech =====
+    let botonActual = null;
+
+    function leerTweet(boton, texto) {
+      const synth = window.speechSynthesis;
+      if (synth.speaking) {
+        synth.cancel();
+        if (botonActual === boton) {
+          boton.classList.remove('playing');
+          boton.innerHTML = iconoPlay() + 'Escuchar';
+          botonActual = null;
+          return;
+        }
+      }
+      if (botonActual && botonActual !== boton) {
+        botonActual.classList.remove('playing');
+        botonActual.innerHTML = iconoPlay() + 'Escuchar';
+      }
+      const u = new SpeechSynthesisUtterance(texto);
+      u.lang = 'es-AR'; u.rate = 0.95; u.pitch = 1;
+      u.onstart = () => { boton.classList.add('playing'); boton.innerHTML = iconoPause() + 'Detener'; botonActual = boton; };
+      u.onend = u.onerror = () => { boton.classList.remove('playing'); boton.innerHTML = iconoPlay() + 'Escuchar'; botonActual = null; };
+      synth.speak(u);
+    }
+
+    function iconoPlay()  { return '<svg viewBox="0 0 24 24" fill="currentColor" style="width:14px;height:14px;flex-shrink:0"><path d="M3 9v6h4l5 5V4L7 9H3zm13.5 3c0-1.77-1.02-3.29-2.5-4.03v8.05c1.48-.73 2.5-2.25 2.5-4.02z"/></svg>'; }
+    function iconoPause() { return '<svg viewBox="0 0 24 24" fill="currentColor" style="width:14px;height:14px;flex-shrink:0"><path d="M6 19h4V5H6v14zm8-14v14h4V5h-4z"/></svg>'; }
+
+    // ===== Enviar historia =====
+    function enviarHistoria() {
+      const input = document.getElementById('inputHistoria');
+      const texto = input.value.trim();
+      if (!texto) return;
+      // Aquí iría la lógica de envío real
+      alert('¡Gracias por sumar tu historia!');
+      input.value = '';
+    }
+
+    // Enviar con Enter
+    document.getElementById('inputHistoria').addEventListener('keydown', e => {
+      if (e.key === 'Enter') enviarHistoria();
+    });
+
+    // ===== Grabación de audio =====
+    let mediaRecorder = null;
+    let grabando = false;
+
+    function toggleGrabacion() {
+      const btn = document.getElementById('btnGrabar');
+      if (!grabando) {
+        navigator.mediaDevices.getUserMedia({ audio: true })
+          .then(stream => {
+            mediaRecorder = new MediaRecorder(stream);
+            const chunks = [];
+            mediaRecorder.ondataavailable = e => chunks.push(e.data);
+            mediaRecorder.onstop = () => {
+              const blob = new Blob(chunks, { type: 'audio/webm' });
+              // Aquí iría la lógica para subir o usar el audio grabado
+              console.log('Audio grabado:', blob);
+              stream.getTracks().forEach(t => t.stop());
+            };
+            mediaRecorder.start();
+            grabando = true;
+            btn.classList.add('grabando');
+            btn.title = 'Detener grabación';
+          })
+          .catch(() => alert('No se pudo acceder al micrófono.'));
+      } else {
+        mediaRecorder.stop();
+        grabando = false;
+        btn.classList.remove('grabando');
+        btn.title = 'Grabar audio';
+      }
+    }
+
+    // ===== Modal registro =====
+    function abrirModal() {
+      document.getElementById('modalOverlay').classList.add('visible');
+    }
+    function cerrarModal() {
+      document.getElementById('modalOverlay').classList.remove('visible');
+    }
+    function cerrarModalClickFuera(e) {
+      if (e.target === document.getElementById('modalOverlay')) cerrarModal();
+    }
+    document.addEventListener('keydown', e => { if (e.key === 'Escape') cerrarModal(); });
+  </script>
+
+</body>
+</html>
